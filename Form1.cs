@@ -28,6 +28,14 @@ namespace Lab2
             {
                 dataGridView1.Rows.Add();
             }
+
+            for (int i = 0; i < numericUpDownElements.Value; i++)
+            {
+                dataGridView3.Columns.Add(i.ToString(), i.ToString());
+                dataGridView3.Columns[i].DefaultCellStyle.NullValue = "0";
+            }
+            dataGridView3.Rows.Add();
+
         }
 
         private void numericUpDownCriteries_ValueChanged(object sender, EventArgs e)
@@ -48,11 +56,14 @@ namespace Lab2
             {
                 dataGridView1.Columns.Add((dataGridView1.Columns.Count).ToString(), (dataGridView1.Columns.Count).ToString());
                 dataGridView1.Columns[dataGridView1.Columns.Count - 1].DefaultCellStyle.NullValue = "0";
+                dataGridView3.Columns.Add((dataGridView3.Columns.Count).ToString(), (dataGridView3.Columns.Count).ToString());
+                dataGridView3.Columns[dataGridView3.Columns.Count - 1].DefaultCellStyle.NullValue = "0";
 
             }
             else
             {
                 dataGridView1.Columns.Remove((Convert.ToInt32(((UpDownBase)sender).Text) - 1).ToString());
+                dataGridView3.Columns.Remove((Convert.ToInt32(((UpDownBase)sender).Text) - 1).ToString());
             }
         }
 
@@ -64,6 +75,7 @@ namespace Lab2
                 for (int j = 0; j < dataGridView1.Rows.Count; j++)
                 {
                     dataGridView1.Rows[j].Cells[i].Value = rnd.Next(0, 15).ToString();
+                    dataGridView3.Rows[0].Cells[i].Value = rnd.Next(0, 15).ToString();
                 }
             }
         }
@@ -76,20 +88,6 @@ namespace Lab2
                 sum += element;
             }
             return sum;
-        }
-
-        private static List<List<double>> dgwTo2dListOfDouble(DataGridView dataGridView)
-        {
-            List<List<double>> list = new List<List<double>>();
-            for (int i2 = 0; i2 < dataGridView.Rows.Count; i2++)
-            {
-                list.Add(new List<double>());
-                for (int j2 = 0; j2 < dataGridView.Columns.Count; j2++)
-                {
-                    list[i2].Add(Convert.ToDouble(dataGridView.Rows[i2].Cells[j2].Value));
-                }
-            }
-            return list;
         }
 
         private static List<List<double>> Pareto(List<List<double>> matrix)
@@ -157,7 +155,18 @@ namespace Lab2
             dataGridView2.Columns.Clear();
             dataGridView2.Refresh();
 
-            List<List<double>> matrix = dgwTo2dListOfDouble(dataGridView1);
+            List<List<double>> matrix = new List<List<double>>();
+
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                matrix.Add(new List<double>());
+                for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                {
+                    var value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * Convert.ToDouble(dataGridView3.Rows[dataGridView3.RowCount - 1].Cells[j].Value);
+                    Console.WriteLine(value);
+                    matrix[i].Add(value);
+                }
+            }
 
             List<List<double>> result = Pareto(matrix);
 

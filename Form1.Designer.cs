@@ -233,7 +233,8 @@ namespace Lab2
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Сужение множества Парето на основе информации об относительной важности критериев" +
+    "";
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.groupBox6.ResumeLayout(false);
